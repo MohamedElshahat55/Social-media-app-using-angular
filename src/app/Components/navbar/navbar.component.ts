@@ -1,5 +1,9 @@
+import { Router } from '@angular/router';
 import { AccountService } from './../../_Services/account.service';
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { Observable, of } from 'rxjs';
+import { User } from '../../_models/User';
 
 @Component({
   selector: 'app-navbar',
@@ -7,37 +11,35 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  constructor(private _AccountService: AccountService) {}
+  constructor(
+    private _AccountService: AccountService,
+    private _router: Router,
+    private _toaster: ToastrService
+  ) {}
+  // Observables
+  currentUser$: Observable<User | null> = of(null);
 
   ngOnInit(): void {
-    this.getCurrentUser();
+    this.currentUser$ = this._AccountService.currentUser$;
   }
 
   // variables
   model: any = {};
-  loggedIn: boolean = false;
+  user: string | undefined = '';
 
-  // this fn always to check the user is exist in local storage or not
-  getCurrentUser() {
-    this._AccountService.currentUser$.subscribe({
-      next: (user) => (this.loggedIn = !!user), //if the user variable is truthy (not null or false) and to false otherwise.
-      error: (err) => console.log(err),
-    });
-  }
-
+  // Login
   login() {
     this._AccountService.login(this.model).subscribe({
-      next: (response) => {
-        console.log(response);
-        this.loggedIn = true;
+      next: (_) => this._router.navigateByUrl('/members'),
+      error: (err) => {
+        console.log(err);
       },
-
-      error: (err) => console.log(err),
     });
   }
 
+  // Logout
   logOut() {
-    this.loggedIn = false;
     this._AccountService.logout();
+    this._router.navigateByUrl('/');
   }
 }
