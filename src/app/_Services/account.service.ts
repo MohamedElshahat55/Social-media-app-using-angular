@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/User';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  BaseUrl = 'https://localhost:7086/api/';
+  BaseUrl = environment.apiUrl;
   private currentUserSource = new BehaviorSubject<User | null>(null); // as a box hold initial value
   //=====================================================================================
   //The asObservable() => method allows other components to subscribe and receive updates.

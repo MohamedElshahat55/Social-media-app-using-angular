@@ -1,1 +1,61 @@
-<p>member-detail works!</p>
+<div class="container">
+  <div class="row mt-5 border shadow p-4" *ngIf="member">
+    <div class="col-4">
+      <div >
+        <div class="card">
+          <img
+            class="card-img-top"
+            [src]="member.photoUrl"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">
+              <strong>Location:</strong> {{ member.country }},{{ member.city }}
+            </h5>
+            <p class="card-text"><strong>Age:</strong> {{ member.age }}</p>
+            <p class="card-text">
+              <strong>Last active:</strong> {{ member.lastActive | date }}
+            </p>
+            <p class="card-text">
+              <strong>member since:</strong> {{ member.created | date }}
+            </p>
+            <hr />
+
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-primary">
+                <i class="fa fa-heart"></i>
+              </button>
+              <button type="button" class="btn btn-success">
+                <i class="fa fa-message"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+        <tabset class="member-tabs">
+            <tab heading="About {{member.knownAs}}">
+                <h4>Description</h4>
+                <p>{{member.introduction}}</p>
+                <h4>Looking for</h4>
+                <p>{{member.lookingFor}}</p>
+            </tab>
+            <tab heading="Interests">
+                <h4>Interests</h4>
+                <p>{{member.interests}}</p>
+                
+            </tab>
+            <tab heading="Photos">
+                <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
+                
+            </tab>
+            <tab heading="Medsages">
+                
+                <p>Messages will go here</p>
+                
+            </tab>
+        </tabset>
+    </div>
+  </div>
+</div>
